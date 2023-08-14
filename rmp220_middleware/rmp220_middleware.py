@@ -76,7 +76,7 @@ class StateMachineNode(Node):
             self.disable_chassis()
 
     def cmd_vel_callback(self, msg):
-        if self.state == State.ENABLED and (msg.linear.x >= 0.03 or msg.angular.z >= 0.03):
+        if self.state == State.ENABLED and (abs(msg.linear.x) >= 0.03 or abs(msg.angular.z) >= 0.03):
             self.cmd_vel_pub.publish(msg)
             self.timeout = 20.0  # Reset timeout when receiving commands
             if msg.linear.x == 0.0 and msg.angular.z == 0.0:
@@ -92,7 +92,7 @@ class StateMachineNode(Node):
             self.cmd_vel_pub.publish(msg)
             self.timeout = 10.0  # Reset timeout when receiving commands
 
-        if msg.linear.x > 0.03 or msg.angular.z > 0.03:
+        if abs(msg.linear.x) > 0.03 or abs(msg.angular.z) > 0.03:
             self.latest_cmd_vel = msg
         else:
             self.latest_cmd_vel = Twist()
