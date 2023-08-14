@@ -94,8 +94,8 @@ class StateMachineNode(Node):
 
         if abs(msg.linear.x) > 0.03 or abs(msg.angular.z) > 0.03:
             self.latest_cmd_vel = msg
-        # else:
-        #     self.latest_cmd_vel = Twist()
+        else:
+             self.latest_cmd_vel = Twist()
 
     def timer_callback(self):
         #self.cmd_vel_pub.publish(self.twist)
