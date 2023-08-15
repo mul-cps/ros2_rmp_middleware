@@ -76,26 +76,30 @@ class StateMachineNode(Node):
             self.disable_chassis()
 
     def cmd_vel_callback(self, msg):
-        if self.state == State.ENABLED and (abs(msg.linear.x) >= 0.03 or abs(msg.angular.z) >= 0.03):
-            self.cmd_vel_pub.publish(msg)
-            self.timeout = 20.0  # Reset timeout when receiving commands
-            if msg.linear.x == 0.0 and msg.angular.z == 0.0:
-                # No data received on cmd_vel_mux, publish zeros
-                twist_msg = Twist()
-                self.cmd_vel_pub.publish(twist_msg)
-            else:
-                # Forward received data to cmd_vel_out
-                self.cmd_vel_pub.publish(msg)
-            self.timeout = 10.0  # Reset timeout when receiving commands
+        # if self.state == State.ENABLED and (abs(msg.linear.x) >= 0.03 or abs(msg.angular.z) >= 0.03):
+        #     self.cmd_vel_pub.publish(msg)
+        #     self.timeout = 20.0  # Reset timeout when receiving commands
+        #     if msg.linear.x == 0.0 and msg.angular.z == 0.0:
+        #         # No data received on cmd_vel_mux, publish zeros
+        #         twist_msg = Twist()
+        #         self.cmd_vel_pub.publish(twist_msg)
+        #     else:
+        #         # Forward received data to cmd_vel_out
+        #         self.cmd_vel_pub.publish(msg)
+        #     self.timeout = 10.0  # Reset timeout when receiving commands
 
-            # Forward received data to cmd_vel_out
-            self.cmd_vel_pub.publish(msg)
-            self.timeout = 10.0  # Reset timeout when receiving commands
+        #     # Forward received data to cmd_vel_out
+        #     self.cmd_vel_pub.publish(msg)
+        #     self.timeout = 10.0  # Reset timeout when receiving commands
 
-        if abs(msg.linear.x) > 0.03 or abs(msg.angular.z) > 0.03:
-            self.latest_cmd_vel = msg
-        else:
-             self.latest_cmd_vel = Twist()
+        # if abs(msg.linear.x) > 0.03 or abs(msg.angular.z) > 0.03:
+        #     self.latest_cmd_vel = msg
+        # else:
+        #      self.latest_cmd_vel = Twist()
+
+        # This method shall only update the latest_cmd_vel attribute so it can be republished by the timer_callback with 100 HZ. Should have a look at performance though.
+        self.latest_cmd_vel = msg
+        # TODO: Add setting chassis state to enabled automatically upon receiving commands (with filter maybe)
 
     def timer_callback(self):
         #self.cmd_vel_pub.publish(self.twist)
@@ -107,7 +111,7 @@ class StateMachineNode(Node):
                 self.disable_chassis()
             else:
                 self.timeout -= 0.1
-            self.cmd_vel_pub.publish(self.latest_cmd_vel)
+                self.cmd_vel_pub.publish(self.latest_cmd_vel)
         if self.state == State.DISABLED:
             self.cmd_vel_pub.publish(self.twist)
 
