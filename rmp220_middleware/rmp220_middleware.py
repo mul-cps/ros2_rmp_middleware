@@ -102,6 +102,8 @@ class StateMachineNode(Node):
         # TODO: Add setting chassis state to enabled automatically upon receiving commands (with filter maybe)
 
         # TODO: try to cythonize code.
+        # follow for reference: https://stackoverflow.com/questions/72168194/how-to-cythonize-a-python-ros2-package-in-order-to-hide-the-source-code
+        # and https://chat.openai.com/share/cbd877f8-b3da-4e3d-8dab-ff6a46c13597
 
     def timer_callback(self):
         #self.cmd_vel_pub.publish(self.twist)
