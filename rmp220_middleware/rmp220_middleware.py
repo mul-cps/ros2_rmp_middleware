@@ -101,6 +101,8 @@ class StateMachineNode(Node):
         self.latest_cmd_vel = msg
         # TODO: Add setting chassis state to enabled automatically upon receiving commands (with filter maybe)
 
+        # TODO: try to cythonize code.
+
     def timer_callback(self):
         #self.cmd_vel_pub.publish(self.twist)
         #self.cmd_vel_callback(self.cmd_vel_sub)
