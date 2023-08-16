@@ -62,10 +62,10 @@ class StateMachineNode(Node):
         self.get_logger().info('Disabling chassis...')
 
     def joy_callback(self, msg):
-        if self.state == State.DISABLED and self.cmd_vel_sub is not None:
-            self.state = State.ENABLED
-            self.get_logger().info("State: ENABLED (Joystick)")
-            self.enable_chassis()
+        # if self.state == State.DISABLED and self.cmd_vel_sub is not None:
+        #     self.state = State.ENABLED
+        #     self.get_logger().info("State: ENABLED (Joystick)")
+        #     self.enable_chassis()
         if self.state == State.DISABLED and msg.buttons[7] == 1:  # Joystick button 'start'
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (Button 'start')")
