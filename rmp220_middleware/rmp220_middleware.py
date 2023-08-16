@@ -66,11 +66,13 @@ class StateMachineNode(Node):
         #     self.state = State.ENABLED
         #     self.get_logger().info("State: ENABLED (Joystick)")
         #     self.enable_chassis()
-        if self.state == State.DISABLED and msg.buttons[7] == 1:  # Joystick button 'start'
+        # if self.state == State.DISABLED and msg.buttons[7] == 1:  # Joystick button 'start'
+        if msg.buttons[7] == 1:  # Joystick button 'start'
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (Button 'start')")
             self.enable_chassis()
-        if self.state == State.ENABLED and msg.buttons[6] == 1:  # Joystick button 'select'
+        # if self.state == State.ENABLED and msg.buttons[6] == 1:  # Joystick button 'select'
+        if msg.buttons[6] == 1:  # Joystick button 'select'
             self.state = State.DISABLED
             self.get_logger().info("State: DISABLED (Button 'select')")
             self.disable_chassis()
