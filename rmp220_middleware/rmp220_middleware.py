@@ -99,6 +99,7 @@ class StateMachineNode(Node):
 
         # This method shall only update the latest_cmd_vel attribute so it can be republished by the timer_callback with 100 HZ. Should have a look at performance though.
         self.latest_cmd_vel = msg
+        self.timeout = 10.0  # Reset timeout when receiving commands
         # TODO: Add setting chassis state to enabled automatically upon receiving commands (with filter maybe)
 
     def timer_callback(self):
