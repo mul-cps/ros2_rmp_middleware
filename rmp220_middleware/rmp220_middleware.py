@@ -30,7 +30,7 @@ class StateMachineNode(Node):
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel_out', 10)
         self.cmd_vel_sub = self.create_subscription(Twist, '/cmd_vel_mux', self.cmd_vel_callback, 10)
         self.joy_sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
-        self.timer = self.create_timer(0.1, self.timer_callback)
+        self.timer = self.create_timer(0.01, self.timer_callback)
         #self.timer = self.create_timer(0.1, self.cmd_vel_callback)
 
         # Create twist class for publishing velocities
@@ -110,7 +110,7 @@ class StateMachineNode(Node):
                 self.get_logger().info("State: DISABLED (Timeout)")
                 self.disable_chassis()
             else:
-                self.timeout -= 0.1
+                self.timeout -= 0.01
                 self.cmd_vel_pub.publish(self.latest_cmd_vel)
         if self.state == State.DISABLED:
             self.cmd_vel_pub.publish(self.twist)
