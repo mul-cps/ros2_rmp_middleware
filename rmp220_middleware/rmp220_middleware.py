@@ -36,6 +36,8 @@ class StateMachineNode(Node):
         self.twist = Twist()
 
         self.latest_cmd_vel = Twist()
+        self.abs_x = 0.0
+        self.abs_z = 0.0
 
         # Create service clients for chassis enable and disable
         self.chassis_enable_client = self.create_client(RosSetChassisEnableCmd, 'set_chassis_enable')
@@ -70,6 +72,9 @@ class StateMachineNode(Node):
     def cmd_vel_callback(self, msg):
         # This method shall only update the latest_cmd_vel attribute so it can be republished by the timer_callback with 100 HZ. Should have a look at performance though.
         self.latest_cmd_vel = msg
+        self.abs_x = abs(msg.linear.x)
+        self.abs_z = abs(msg.angular.z)
+
         self.timeout = 20.0  # Reset timeout when receiving commands
 
     def timer_callback(self):
@@ -81,7 +86,7 @@ class StateMachineNode(Node):
             else:
                 self.timeout -= 0.01
                 self.cmd_vel_pub.publish(self.latest_cmd_vel)
-        if self.state == State.DISABLED and (abs(self.latest_cmd_vel.linear.x) > 0.1 or abs(self.latest_cmd_vel.angular.z > 0.1)): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
+        if self.state == State.DISABLED and (self.abs_x > 0.1 or self.abs_z > 0.1): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (cmd_vel)")
             self.enable_chassis()
