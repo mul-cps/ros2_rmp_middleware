@@ -1,0 +1,27 @@
+[1.777s] Invoking command in '/home/bjorn/Documents/ros_projects/rmp220_middleware': PYTHONPATH=/home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/prefix_override:/home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/rmp220_middleware build --build-base /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build install --record /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/install.log --single-version-externally-managed
+[2.480s] /usr/lib/python3.10/distutils/dist.py:274: UserWarning: Unknown distribution option: 'xt_modules'
+[2.480s]   warnings.warn(msg)
+[2.496s] [39mrunning egg_info[0m
+[2.497s] [39mwriting build/rmp220_middleware/rmp220_middleware.egg-info/PKG-INFO[0m
+[2.497s] [39mwriting dependency_links to build/rmp220_middleware/rmp220_middleware.egg-info/dependency_links.txt[0m
+[2.497s] [39mwriting entry points to build/rmp220_middleware/rmp220_middleware.egg-info/entry_points.txt[0m
+[2.497s] [39mwriting requirements to build/rmp220_middleware/rmp220_middleware.egg-info/requires.txt[0m
+[2.497s] [39mwriting top-level names to build/rmp220_middleware/rmp220_middleware.egg-info/top_level.txt[0m
+[2.499s] [31mpackage init file 'rmp220_middleware/__init__.py' not found (or not a regular file)[0m
+[2.499s] [39mreading manifest file 'build/rmp220_middleware/rmp220_middleware.egg-info/SOURCES.txt'[0m
+[2.500s] [39mwriting manifest file 'build/rmp220_middleware/rmp220_middleware.egg-info/SOURCES.txt'[0m
+[2.500s] [39mrunning build[0m
+[2.500s] [39mrunning build_py[0m
+[2.500s] [39mcopying rmp220_middleware/rmp220_middleware.py -> /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build/lib/rmp220_middleware[0m
+[2.500s] [39mrunning install[0m
+[2.500s] [39mrunning install_lib[0m
+[2.501s] [39mcopying /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build/lib/rmp220_middleware/rmp220_middleware.py -> /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware[0m
+[2.501s] [39mbyte-compiling /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware/rmp220_middleware.py to rmp220_middleware.cpython-310.pyc[0m
+[2.501s] [39mrunning install_data[0m
+[2.501s] [39mrunning install_egg_info[0m
+[2.502s] [39mremoving '/home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware-0.0.0-py3.10.egg-info' (and everything under it)[0m
+[2.502s] [39mCopying build/rmp220_middleware/rmp220_middleware.egg-info to /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware-0.0.0-py3.10.egg-info[0m
+[2.502s] [39mrunning install_scripts[0m
+[2.504s] [39mInstalling rmp220_middleware script to /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/rmp220_middleware[0m
+[2.504s] [39mwriting list of installed files to '/home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/install.log'[0m
+[2.607s] Invoked command in '/home/bjorn/Documents/ros_projects/rmp220_middleware' returned '0': PYTHONPATH=/home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/prefix_override:/home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/rmp220_middleware build --build-base /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build install --record /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/install.log --single-version-externally-managed

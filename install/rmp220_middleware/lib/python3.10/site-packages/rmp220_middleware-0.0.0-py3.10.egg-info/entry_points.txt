@@ -1,0 +1,3 @@
+[console_scripts]
+rmp220_middleware = rmp220_middleware.rmp220_middleware:main
+

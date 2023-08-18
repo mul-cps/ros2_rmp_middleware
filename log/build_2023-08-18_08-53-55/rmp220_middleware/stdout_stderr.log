@@ -1,0 +1,25 @@
+/usr/lib/python3.10/distutils/dist.py:274: UserWarning: Unknown distribution option: 'xt_modules'
+  warnings.warn(msg)
+[39mrunning egg_info[0m
+[39mwriting build/rmp220_middleware/rmp220_middleware.egg-info/PKG-INFO[0m
+[39mwriting dependency_links to build/rmp220_middleware/rmp220_middleware.egg-info/dependency_links.txt[0m
+[39mwriting entry points to build/rmp220_middleware/rmp220_middleware.egg-info/entry_points.txt[0m
+[39mwriting requirements to build/rmp220_middleware/rmp220_middleware.egg-info/requires.txt[0m
+[39mwriting top-level names to build/rmp220_middleware/rmp220_middleware.egg-info/top_level.txt[0m
+[31mpackage init file 'rmp220_middleware/__init__.py' not found (or not a regular file)[0m
+[39mreading manifest file 'build/rmp220_middleware/rmp220_middleware.egg-info/SOURCES.txt'[0m
+[39mwriting manifest file 'build/rmp220_middleware/rmp220_middleware.egg-info/SOURCES.txt'[0m
+[39mrunning build[0m
+[39mrunning build_py[0m
+[39mcopying rmp220_middleware/rmp220_middleware.py -> /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build/lib/rmp220_middleware[0m
+[39mrunning install[0m
+[39mrunning install_lib[0m
+[39mcopying /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build/lib/rmp220_middleware/rmp220_middleware.py -> /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware[0m
+[39mbyte-compiling /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware/rmp220_middleware.py to rmp220_middleware.cpython-310.pyc[0m
+[39mrunning install_data[0m
+[39mrunning install_egg_info[0m
+[39mremoving '/home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware-0.0.0-py3.10.egg-info' (and everything under it)[0m
+[39mCopying build/rmp220_middleware/rmp220_middleware.egg-info to /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware-0.0.0-py3.10.egg-info[0m
+[39mrunning install_scripts[0m
+[39mInstalling rmp220_middleware script to /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/rmp220_middleware[0m
+[39mwriting list of installed files to '/home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/install.log'[0m

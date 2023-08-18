@@ -1,0 +1,3 @@
+warning: rmp220_middleware/rmp220_middleware.bak.py:1:0: Dotted filenames ('rmp220_middleware.bak.py') are deprecated. Please use the normal Python package directory layout.
+/usr/lib/python3.10/distutils/dist.py:274: UserWarning: Unknown distribution option: 'xt_modules'
+  warnings.warn(msg)

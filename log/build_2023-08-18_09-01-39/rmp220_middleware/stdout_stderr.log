@@ -1,0 +1,30 @@
+/home/bjorn/.local/lib/python3.10/site-packages/Cython/Compiler/Main.py:381: FutureWarning: Cython directive 'language_level' not set, using '3str' for now (Py3). This has changed from earlier releases! File: /home/bjorn/Documents/ros_projects/rmp220_middleware/rmp220_middleware/rmp220_middleware.py
+  tree = Parsing.p_module(s, pxd, full_module_name)
+[39mrunning egg_info[0m
+[39mwriting build/rmp220_middleware/rmp220_middleware.egg-info/PKG-INFO[0m
+[39mwriting dependency_links to build/rmp220_middleware/rmp220_middleware.egg-info/dependency_links.txt[0m
+[39mwriting entry points to build/rmp220_middleware/rmp220_middleware.egg-info/entry_points.txt[0m
+[39mwriting requirements to build/rmp220_middleware/rmp220_middleware.egg-info/requires.txt[0m
+[39mwriting top-level names to build/rmp220_middleware/rmp220_middleware.egg-info/top_level.txt[0m
+[31mpackage init file 'rmp220_middleware/__init__.py' not found (or not a regular file)[0m
+[39mreading manifest file 'build/rmp220_middleware/rmp220_middleware.egg-info/SOURCES.txt'[0m
+[39mwriting manifest file 'build/rmp220_middleware/rmp220_middleware.egg-info/SOURCES.txt'[0m
+[39mrunning build[0m
+[39mrunning build_py[0m
+[39mrunning build_ext[0m
+[39mbuilding 'rmp220_middleware' extension[0m
+[39mC compiler: x86_64-linux-gnu-gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC
+[0m
+[39mcompile options: '-I/home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/include -I/usr/include/python3.10 -c'[0m
+[39mx86_64-linux-gnu-gcc: rmp220_middleware/rmp220_middleware.c[0m
+[39mx86_64-linux-gnu-gcc -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -g -fwrapv -O2 -Wl,-Bsymbolic-functions -g -fwrapv -O2 -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build/temp.linux-x86_64-3.10/rmp220_middleware/rmp220_middleware.o -o /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build/lib.linux-x86_64-3.10/rmp220_middleware.cpython-310-x86_64-linux-gnu.so[0m
+[39mrunning install[0m
+[39mrunning install_lib[0m
+[39mcopying /home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/build/lib.linux-x86_64-3.10/rmp220_middleware.cpython-310-x86_64-linux-gnu.so -> /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages[0m
+[39mrunning install_data[0m
+[39mrunning install_egg_info[0m
+[39mremoving '/home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware-0.0.0-py3.10.egg-info' (and everything under it)[0m
+[39mCopying build/rmp220_middleware/rmp220_middleware.egg-info to /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/python3.10/site-packages/rmp220_middleware-0.0.0-py3.10.egg-info[0m
+[39mrunning install_scripts[0m
+[39mInstalling rmp220_middleware script to /home/bjorn/Documents/ros_projects/rmp220_middleware/install/rmp220_middleware/lib/rmp220_middleware[0m
+[39mwriting list of installed files to '/home/bjorn/Documents/ros_projects/rmp220_middleware/build/rmp220_middleware/install.log'[0m
