@@ -61,13 +61,11 @@ class StateMachineNode(Node):
         start_button = msg.buttons[7] # Joystick button 'start'
         select_button = msg.buttons[6] # Joystick button 'select'
 
-        # if self.state == State.DISABLED and msg.buttons[7] == 1:  
-        if start_button == 1:  # Joystick button 'start'
+        if start_button == 1:
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (Button 'start')")
             self.enable_chassis()
-        # if self.state == State.ENABLED and msg.buttons[6] == 1:  # Joystick button 'select'
-        if select_button == 1:  # Joystick button 'select'
+        if select_button == 1:
             self.state = State.DISABLED
             self.get_logger().info("State: DISABLED (Button 'select')")
             self.disable_chassis()
@@ -75,10 +73,13 @@ class StateMachineNode(Node):
     def cmd_vel_callback(self, msg):
         # This method shall only update the latest_cmd_vel attribute so it can be republished by the timer_callback with 100 HZ. Should have a look at performance though.
         self.latest_cmd_vel = msg
+
+        # Will also derive the absolute values of the linear and angular velocity
         self.abs_x = abs(msg.linear.x)
         self.abs_z = abs(msg.angular.z)
 
-        self.timeout = 20.0  # Reset timeout when receiving commands
+        # Reset timeout when receiving commands
+        self.timeout = 20.0
 
     def timer_callback(self):
         if self.state == State.ENABLED:
