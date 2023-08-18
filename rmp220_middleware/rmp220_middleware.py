@@ -81,7 +81,7 @@ class StateMachineNode(Node):
             else:
                 self.timeout -= 0.01
                 self.cmd_vel_pub.publish(self.latest_cmd_vel)
-        if self.state == State.DISABLED and (abs(self.latest_cmd_vel.linear) > 0.1 or abs(self.latest_cmd_vel.angular > 0.1)): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
+        if self.state == State.DISABLED and (abs(self.latest_cmd_vel.linear.x) > 0.1 or abs(self.latest_cmd_vel.angular.z > 0.1)): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (cmd_vel)")
             self.enable_chassis()
