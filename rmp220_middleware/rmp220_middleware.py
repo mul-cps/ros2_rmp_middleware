@@ -31,7 +31,6 @@ class StateMachineNode(Node):
         self.cmd_vel_sub = self.create_subscription(Twist, '/cmd_vel_mux', self.cmd_vel_callback, 10)
         self.joy_sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
         self.timer = self.create_timer(0.01, self.timer_callback)
-        #self.timer = self.create_timer(0.1, self.cmd_vel_callback)
 
         # Create twist class for publishing velocities
         self.twist = Twist()
@@ -43,11 +42,6 @@ class StateMachineNode(Node):
         while not self.chassis_enable_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('Service not available, waiting for chassis enable service...')
         self.get_logger().info('Chassis enable service available.')
-        
-        # self.chassis_disable_client = self.create_client(RosSetChassisEnableCmd, 'set_chassis_disable')
-        # while not self.chassis_disable_client.wait_for_service(timeout_sec=1.0):
-        #     self.get_logger().info('Service not available, waiting for chassis disable service...')
-        # self.get_logger().info('Chassis disable service available.')
 
     def enable_chassis(self):
         req = RosSetChassisEnableCmd.Request()
@@ -62,10 +56,6 @@ class StateMachineNode(Node):
         self.get_logger().info('Disabling chassis...')
 
     def joy_callback(self, msg):
-        # if self.state == State.DISABLED and self.cmd_vel_sub is not None:
-        #     self.state = State.ENABLED
-        #     self.get_logger().info("State: ENABLED (Joystick)")
-        #     self.enable_chassis()
         # if self.state == State.DISABLED and msg.buttons[7] == 1:  # Joystick button 'start'
         if msg.buttons[7] == 1:  # Joystick button 'start'
             self.state = State.ENABLED
@@ -78,35 +68,11 @@ class StateMachineNode(Node):
             self.disable_chassis()
 
     def cmd_vel_callback(self, msg):
-        # if self.state == State.ENABLED and (abs(msg.linear.x) >= 0.03 or abs(msg.angular.z) >= 0.03):
-        #     self.cmd_vel_pub.publish(msg)
-        #     self.timeout = 20.0  # Reset timeout when receiving commands
-        #     if msg.linear.x == 0.0 and msg.angular.z == 0.0:
-        #         # No data received on cmd_vel_mux, publish zeros
-        #         twist_msg = Twist()
-        #         self.cmd_vel_pub.publish(twist_msg)
-        #     else:
-        #         # Forward received data to cmd_vel_out
-        #         self.cmd_vel_pub.publish(msg)
-        #     self.timeout = 10.0  # Reset timeout when receiving commands
-
-        #     # Forward received data to cmd_vel_out
-        #     self.cmd_vel_pub.publish(msg)
-        #     self.timeout = 10.0  # Reset timeout when receiving commands
-
-        # if abs(msg.linear.x) > 0.03 or abs(msg.angular.z) > 0.03:
-        #     self.latest_cmd_vel = msg
-        # else:
-        #      self.latest_cmd_vel = Twist()
-
         # This method shall only update the latest_cmd_vel attribute so it can be republished by the timer_callback with 100 HZ. Should have a look at performance though.
         self.latest_cmd_vel = msg
-        self.timeout = 10.0  # Reset timeout when receiving commands
-        # TODO: Add setting chassis state to enabled automatically upon receiving commands (with filter maybe)
+        self.timeout = 20.0  # Reset timeout when receiving commands
 
     def timer_callback(self):
-        #self.cmd_vel_pub.publish(self.twist)
-        #self.cmd_vel_callback(self.cmd_vel_sub)
         if self.state == State.ENABLED:
             if self.timeout <= 0:
                 self.state = State.DISABLED
@@ -115,7 +81,11 @@ class StateMachineNode(Node):
             else:
                 self.timeout -= 0.01
                 self.cmd_vel_pub.publish(self.latest_cmd_vel)
-        if self.state == State.DISABLED:
+        if self.state == State.DISABLED and (abs(self.latest_cmd_vel.linear) > 0.1 or abs(self.latest_cmd_vel.angular > 0.1)): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
+            self.state = State.ENABLED
+            self.get_logger().info("State: ENABLED (cmd_vel)")
+            self.enable_chassis()
+        else:
             self.cmd_vel_pub.publish(self.twist)
 
 def main(args=None):
@@ -129,26 +99,6 @@ def main(args=None):
         node.disable_chassis()
         node.destroy_node()
         rclpy.shutdown()
-
-# def main(args=None):
-#     rclpy.init(args=args)
-#     node = StateMachineNode()
-
-#     # Register a signal handler for proper cleanup
-#     def cleanup_handler(signum, frame):
-#         node.disable_chassis()
-#         rclpy.shutdown()
-#         sys.exit(0)
-
-#     signal.signal(signal.SIGINT, cleanup_handler)
-#     atexit.register(cleanup_handler)  # Ensure cleanup on normal exit as well
-
-#     try:
-#         rclpy.spin(node)
-#     except KeyboardInterrupt:
-#         pass
-#     finally:
-#         pass
 
 if __name__ == '__main__':
     main()
