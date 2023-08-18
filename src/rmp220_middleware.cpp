@@ -15,23 +15,23 @@ enum class State {
     ENABLED
 };
 
-class StateMachineNode : public rclcpp::Node {
+class rmp220_middleware : public rclcpp::Node {
 public:
-    StateMachineNode() : Node("state_machine_node") {
+    rmp220_middleware() : Node("state_machine_node") {
         state = State::DISABLED;
         timeout = 20.0;
 
         cmd_vel_pub = create_publisher<geometry_msgs::msg::Twist>("/cmd_vel_out", 10);
         cmd_vel_sub = create_subscription<geometry_msgs::msg::Twist>(
             "/cmd_vel_mux", 10,
-            std::bind(&StateMachineNode::cmd_vel_callback, this, std::placeholders::_1)
+            std::bind(&rmp220_middleware::cmd_vel_callback, this, std::placeholders::_1)
         );
         joy_sub = create_subscription<sensor_msgs::msg::Joy>(
             "/joy", 10,
-            std::bind(&StateMachineNode::joy_callback, this, std::placeholders::_1)
+            std::bind(&rmp220_middleware::joy_callback, this, std::placeholders::_1)
         );
 
-        timer = create_wall_timer(10ms, std::bind(&StateMachineNode::timer_callback, this));
+        timer = create_wall_timer(10ms, std::bind(&rmp220_middleware::timer_callback, this));
 
         chassis_enable_client = create_client<segway_msgs::srv::RosSetChassisEnableCmd>("set_chassis_enable");
         while (!chassis_enable_client->wait_for_service(1s)) {
@@ -107,7 +107,7 @@ private:
 
 int main(int argc, char * argv[]) {
     rclcpp::init(argc, argv);
-    auto node = std::make_shared<StateMachineNode>();
+    auto node = std::make_shared<rmp220_middleware>();
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;
