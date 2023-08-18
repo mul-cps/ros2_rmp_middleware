@@ -105,9 +105,21 @@ private:
     }
 };
 
+std::shared_ptr<rmp220_middleware> node;  // Declare the node as a global variable
+
+void signal_handler(int signum) {
+    (void)signum;
+    RCLCPP_INFO(node->get_logger(), "Received Ctrl+C. Shutting down...");
+    rclcpp::shutdown();
+}
+
 int main(int argc, char * argv[]) {
     rclcpp::init(argc, argv);
     auto node = std::make_shared<rmp220_middleware>();
+
+    // Register the Ctrl+C signal handler
+    signal(SIGINT, signal_handler);
+
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;
