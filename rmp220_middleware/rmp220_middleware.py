@@ -94,7 +94,7 @@ class StateMachineNode(Node):
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (cmd_vel)")
             self.enable_chassis()
-        else:
+        if self.state == State.DISABLED and (self.abs_x < 0.1 and self.abs_z < 0.1):
             self.cmd_vel_pub.publish(self.twist)
 
 def main(args=None):
