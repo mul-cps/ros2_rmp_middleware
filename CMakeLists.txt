@@ -28,7 +28,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_executable(rmp220_middleware rmp220_middleware.cpp)
+add_executable(rmp220_middleware src/rmp220_middleware.cpp)
 ament_target_dependencies(rmp220_middleware rclcpp std_msgs geometry_msgs sensor_msgs segway_msgs)
 
 install(TARGETS rmp220_middleware DESTINATION lib/${PROJECT_NAME})
