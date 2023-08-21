@@ -7,15 +7,17 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
 from enum import Enum
 from segway_msgs.srv import RosSetChassisEnableCmd
+from segway_msgs.msg import ChassisModeFb
 
 
 import atexit
 import signal
 import sys
 
-class State(Enum):
+class State(Enum): # is this best-practice?
     DISABLED = 0
-    ENABLED = 1
+    PAUSED = 1
+    ENABLED = 2
 
 class StateMachineNode(Node):
     def __init__(self):
@@ -45,16 +47,46 @@ class StateMachineNode(Node):
             self.get_logger().info('Service not available, waiting for chassis enable service...')
         self.get_logger().info('Chassis enable service available.')
 
+        # Create a subscriber for the chassis status topic
+        self.chassis_mode_sub = self.create_subscription(
+            ChassisModeFb,
+            '/chassis_mode_fb',
+            self.chassis_mode_callback,
+            10
+        )
+
+        self.chassis_mode = State.DISABLED
+
+    def chassis_mode_callback(self, msg):
+        # Handle the incoming chassis status message
+        # Need to figure out the type
+        if msg.chassis_mode == 1:  # Assuming 1 represents enabled and 0 represents disabled
+            self.chassis_mode = State.ENABLED
+        else:
+            self.chassis_mode = State.DISABLED
+
+    def get_chassis_mode(self):
+        return self.chassis_mode
+
     def enable_chassis(self):
         req = RosSetChassisEnableCmd.Request()
         req.ros_set_chassis_enable_cmd = True
         self.chassis_enable_client.call_async(req)
+        self.state = State.ENABLED
         self.get_logger().info('Enabling chassis...')
+
+    def pause_chassis(self):
+        req = RosSetChassisEnableCmd.Request()
+        req.ros_set_chassis_enable_cmd = False
+        self.chassis_enable_client.call_async(req)
+        self.state = State.PAUSED
+        self.get_logger().info('Pausing chassis...')
 
     def disable_chassis(self):
         req = RosSetChassisEnableCmd.Request()
         req.ros_set_chassis_enable_cmd = False
         self.chassis_enable_client.call_async(req)
+        self.state = State.DISABLED
         self.get_logger().info('Disabling chassis...')
 
     def joy_callback(self, msg):
@@ -82,20 +114,22 @@ class StateMachineNode(Node):
         self.timeout = 20.0
 
     def timer_callback(self):
-        if self.state == State.ENABLED:
+        #if self.state == State.ENABLED:
+        if self.chassis_mode == State.ENABLED:
             if self.timeout <= 0:
-                self.state = State.DISABLED
-                self.get_logger().info("State: DISABLED (Timeout)")
+                self.state = State.PAUSED
+                self.get_logger().info("State: PAUSED (Timeout)")
                 self.disable_chassis()
             else:
                 self.timeout -= 0.01
                 self.cmd_vel_pub.publish(self.latest_cmd_vel)
-        if self.state == State.DISABLED and (self.abs_x > 0.1 or self.abs_z > 0.1): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
+        #if self.state == State.PAUSED and (self.abs_x > 0.1 or self.abs_z > 0.1): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
+        if self.state == State.PAUSED and (self.abs_x > 0.1 or self.abs_z > 0.1): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (cmd_vel)")
             self.enable_chassis()
-        if self.state == State.DISABLED and (self.abs_x < 0.1 and self.abs_z < 0.1):
-            self.cmd_vel_pub.publish(self.twist)
+        # if self.state == State.PAUSED and (self.abs_x < 0.1 and self.abs_z < 0.1): # Is this even necessary?
+        #     self.cmd_vel_pub.publish(self.twist)
 
 def main(args=None):
     rclpy.init(args=args)
