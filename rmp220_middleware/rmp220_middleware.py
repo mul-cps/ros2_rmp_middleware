@@ -115,7 +115,7 @@ class StateMachineNode(Node):
             self.get_logger().info("State: ENABLED (Button 'start')")
             self.enable_chassis()
         if select_button == 1:
-            self.state = State.DISABLED
+            self.state = State.PAUSED
             self.get_logger().info("State: DISABLED (Button 'select')")
             self.disable_chassis()
 
@@ -133,10 +133,12 @@ class StateMachineNode(Node):
     def timer_callback(self):
         # if self.chassis_mode == State.DISABLED or self.chassis_mode == State.STOPPED or self.chassis_mode == State.PASSIVE:
         #     return # Do nothing if chassis is disabled, stopped or passive --> should save processing power
+        if self.state == State.PAUSED:
+            return # Do nothing if state is paused --> should save processing power
         if self.state == State.ENABLED:
             if self.timeout <= 0:
-                self.state = State.PAUSED
-                self.get_logger().info("State: PAUSED (Timeout)")
+                self.state = State.DISABLED
+                self.get_logger().info("State: DISABLED (Timeout)")
                 self.disable_chassis()
             else:
                 self.timeout -= 0.01
