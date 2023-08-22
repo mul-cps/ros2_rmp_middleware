@@ -62,7 +62,9 @@ class StateMachineNode(Node):
     def chassis_mode_callback(self, msg):
         # Handle the incoming chassis status message, will update every second
         # Need to figure out the type
-        self.get_logger().info('Got chassis_mode =' + msg.chassis_mode + ' from chassis_mode_fb topic')
+        self.get_logger().info('Got chassis_mode from chassis_mode_fb topic')
+        self.get_logger().info(msg.chassis_mode)
+        
         if msg.chassis_mode == 0:
             self.chassis_mode = State.DISABLED
             self.state = State.DISABLED
