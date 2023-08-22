@@ -26,15 +26,8 @@ class StateMachineNode(Node):
         super().__init__('state_machine_node')
 
         # Initialize state and other variables
-        self.state = State.DISABLED
+        self.state = State.DISABLED # is this necessary?
         self.timeout = 20.0  # Timeout in seconds
-        #self.limit = 0.5  # Limit for linear and angular velocity
-
-        # Create publishers, subscribers, timers, and service clients
-        self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel_out', 10)
-        self.cmd_vel_sub = self.create_subscription(Twist, '/cmd_vel_mux', self.cmd_vel_callback, 10)
-        self.joy_sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
-        self.timer = self.create_timer(0.01, self.timer_callback)
 
         # Create twist class for publishing velocities
         self.twist = Twist()
@@ -42,6 +35,14 @@ class StateMachineNode(Node):
         self.latest_cmd_vel = Twist()
         self.abs_x = 0.0
         self.abs_z = 0.0
+
+        #self.limit = 0.5  # Limit for linear and angular velocity
+
+        # Create publishers, subscribers, timers, and service clients
+        self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel_out', 10)
+        self.cmd_vel_sub = self.create_subscription(Twist, '/cmd_vel_mux', self.cmd_vel_callback, 10)
+        self.joy_sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
+        self.timer = self.create_timer(0.01, self.timer_callback)
 
         # Create service clients for chassis enable and disable
         self.chassis_enable_client = self.create_client(RosSetChassisEnableCmd, 'set_chassis_enable')
@@ -57,33 +58,24 @@ class StateMachineNode(Node):
             10
         )
 
-        self.chassis_mode = State.DISABLED
-
     def chassis_mode_callback(self, msg):
+        # Need to evaluate that for possible errors
         # Handle the incoming chassis status message, will update every second
-
-        if self.state == State.PAUSED:
+        if self.state == State.PAUSED: # trying to save processing time by skipping directly if PAUSED
             return
         else:
             if msg.chassis_mode == 0:
-                self.chassis_mode = State.DISABLED
                 self.state = State.DISABLED
                 self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
             if msg.chassis_mode == 1:  # Assuming 1 represents enabled and 0 represents disabled
-                self.chassis_mode = State.ENABLED
                 self.state = State.ENABLED
                 self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
             if msg.chassis_mode == 2:
-                self.chassis_mode = State.PASSIVE
                 self.state = State.PASSIVE
                 self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
             if msg.chassis_mode == 3:
-                self.chassis_mode = State.STOPPED
                 self.state = State.STOPPED
                 self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
-        
-    def get_chassis_mode(self):
-        return self.chassis_mode
 
     def enable_chassis(self):
         req = RosSetChassisEnableCmd.Request()
@@ -113,11 +105,13 @@ class StateMachineNode(Node):
         if start_button == 1:
             self.get_logger().info("State: ENABLED (Button 'start')")
             self.enable_chassis()
+            self.timeout = 20
         if select_button == 1:
             self.get_logger().info("State: DISABLED (Button 'select')")
             self.pause_chassis()
 
     def cmd_vel_callback(self, msg):
+        # Should be called everytime a new cmd_vel is received on /cmd_vel_mux
         # This method shall only update the latest_cmd_vel attribute so it can be republished by the timer_callback with 100 HZ. Should have a look at performance though.
         self.latest_cmd_vel = msg
 
@@ -131,23 +125,18 @@ class StateMachineNode(Node):
     def timer_callback(self):
         if self.state == State.PAUSED or self.state == State.STOPPED or self.state == State.PASSIVE:
             return # Do nothing if chassis is disabled, stopped or passive --> should save processing power
-        # if self.state == State.PAUSED:
-        #     return # Do nothing if state is paused --> should save processing power
         if self.state == State.ENABLED:
             if self.timeout <= 0:
                 self.state = State.DISABLED
                 self.get_logger().info("State: DISABLED (Timeout)")
                 self.disable_chassis()
             else:
-                self.timeout -= 0.01
+                self.timeout -= 0.01 # at a rate of 100 Hz this equals to -1 per second.
                 self.cmd_vel_pub.publish(self.latest_cmd_vel)
-        #if self.state == State.PAUSED and (self.abs_x > 0.1 or self.abs_z > 0.1): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
         if self.state == State.DISABLED and (self.abs_x > 0.1 or self.abs_z > 0.1): # This is a hack to enable the chassis when receiving commands e.g. from Nav2
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (cmd_vel)")
             self.enable_chassis()
-        # if self.state == State.PAUSED and (self.abs_x < 0.1 and self.abs_z < 0.1): # Is this even necessary?
-        #     self.cmd_vel_pub.publish(self.twist)
 
 def main(args=None):
     rclpy.init(args=args)
