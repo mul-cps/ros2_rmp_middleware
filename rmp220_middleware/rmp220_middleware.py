@@ -114,13 +114,11 @@ class StateMachineNode(Node):
         select_button = msg.buttons[6] # Joystick button 'select'
 
         if start_button == 1:
-            self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (Button 'start')")
             self.enable_chassis()
         if select_button == 1:
-            self.state = State.PAUSED
             self.get_logger().info("State: DISABLED (Button 'select')")
-            self.disable_chassis()
+            self.pause_chassis()
 
     def cmd_vel_callback(self, msg):
         # This method shall only update the latest_cmd_vel attribute so it can be republished by the timer_callback with 100 HZ. Should have a look at performance though.
