@@ -124,8 +124,8 @@ class StateMachineNode(Node):
         self.timeout = 20.0
 
     def timer_callback(self):
-        if self.chassis_mode == State.DISABLED or self.chassis_mode == State.STOPPED or self.chassis_mode == State.PASSIVE:
-            return # Do nothing if chassis is disabled, stopped or passive --> should save processing power
+        # if self.chassis_mode == State.DISABLED or self.chassis_mode == State.STOPPED or self.chassis_mode == State.PASSIVE:
+        #     return # Do nothing if chassis is disabled, stopped or passive --> should save processing power
         if self.chassis_mode == State.ENABLED:
             if self.timeout <= 0:
                 self.state = State.PAUSED
