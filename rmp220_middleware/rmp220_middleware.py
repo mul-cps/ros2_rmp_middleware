@@ -15,9 +15,11 @@ import signal
 import sys
 
 class State(Enum): # is this best-practice?
-    DISABLED = 0
-    PAUSED = 1
-    ENABLED = 2
+    DISABLED = 0 # solid yellow
+    ENABLED = 1 # solid green
+    PASSIVE = 2 # solid white (push)
+    STOPPED = 3 # solid red
+    PAUSED = 4 # no extra visual feedback, solid yellow
 
 class StateMachineNode(Node):
     def __init__(self):
@@ -58,12 +60,17 @@ class StateMachineNode(Node):
         self.chassis_mode = State.DISABLED
 
     def chassis_mode_callback(self, msg):
-        # Handle the incoming chassis status message
+        # Handle the incoming chassis status message, will update every second
         # Need to figure out the type
+        if msg.chassis_mode == 0:
+            self.chassis_mode = State.DISABLED
         if msg.chassis_mode == 1:  # Assuming 1 represents enabled and 0 represents disabled
             self.chassis_mode = State.ENABLED
-        else:
-            self.chassis_mode = State.DISABLED
+        if msg.chassis_mode == 2:
+            self.chassis_mode = State.PASSIVE
+        if msg.chassis_mode == 3:
+            self.chassis_mode = State.STOPPED
+        
 
     def get_chassis_mode(self):
         return self.chassis_mode
@@ -114,7 +121,8 @@ class StateMachineNode(Node):
         self.timeout = 20.0
 
     def timer_callback(self):
-        #if self.state == State.ENABLED:
+        if self.chassis_mode == State.DISABLED or self.chassis_mode == State.STOPPED or self.chassis_mode == State.PASSIVE:
+            return # Do nothing if chassis is disabled, stopped or passive --> should save processing power
         if self.chassis_mode == State.ENABLED:
             if self.timeout <= 0:
                 self.state = State.PAUSED
