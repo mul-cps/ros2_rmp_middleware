@@ -68,7 +68,7 @@ class StateMachineNode(Node):
         if msg.chassis_mode == 0:
             self.chassis_mode = State.DISABLED
             self.state = State.DISABLED
-            self.get_logger().info('Set chassis_mode to DISABLED')
+            self.get_logger().info('Set chassis_mode to' + str(self.state))
         if msg.chassis_mode == 1:  # Assuming 1 represents enabled and 0 represents disabled
             self.chassis_mode = State.ENABLED
             self.state = State.ENABLED
