@@ -65,22 +65,25 @@ class StateMachineNode(Node):
         self.get_logger().info('Got chassis_mode from chassis_mode_fb topic')
         self.get_logger().info(str(msg.chassis_mode))
 
-        if msg.chassis_mode == 0:
-            self.chassis_mode = State.DISABLED
-            self.state = State.DISABLED
-            self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
-        if msg.chassis_mode == 1:  # Assuming 1 represents enabled and 0 represents disabled
-            self.chassis_mode = State.ENABLED
-            self.state = State.ENABLED
-            self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
-        if msg.chassis_mode == 2:
-            self.chassis_mode = State.PASSIVE
-            self.state = State.PASSIVE
-            self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
-        if msg.chassis_mode == 3:
-            self.chassis_mode = State.STOPPED
-            self.state = State.STOPPED
-            self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
+        if self.state == State.PAUSED:
+            return
+        else:
+            if msg.chassis_mode == 0:
+                self.chassis_mode = State.DISABLED
+                self.state = State.DISABLED
+                self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
+            if msg.chassis_mode == 1:  # Assuming 1 represents enabled and 0 represents disabled
+                self.chassis_mode = State.ENABLED
+                self.state = State.ENABLED
+                self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
+            if msg.chassis_mode == 2:
+                self.chassis_mode = State.PASSIVE
+                self.state = State.PASSIVE
+                self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
+            if msg.chassis_mode == 3:
+                self.chassis_mode = State.STOPPED
+                self.state = State.STOPPED
+                self.get_logger().info('Set chassis_mode to ' + str(self.state.value))
         
     def get_chassis_mode(self):
         return self.chassis_mode
