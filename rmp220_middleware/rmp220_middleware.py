@@ -61,7 +61,7 @@ class StateMachineNode(Node):
 
     def chassis_mode_callback(self, msg):
         # Handle the incoming chassis status message, will update every second
-        
+
         if self.state == State.PAUSED:
             return
         else:
@@ -129,10 +129,10 @@ class StateMachineNode(Node):
         self.timeout = 20.0
 
     def timer_callback(self):
-        # if self.chassis_mode == State.DISABLED or self.chassis_mode == State.STOPPED or self.chassis_mode == State.PASSIVE:
-        #     return # Do nothing if chassis is disabled, stopped or passive --> should save processing power
-        if self.state == State.PAUSED:
-            return # Do nothing if state is paused --> should save processing power
+        if self.state == State.PAUSED or self.state == State.STOPPED or self.state == State.PASSIVE:
+            return # Do nothing if chassis is disabled, stopped or passive --> should save processing power
+        # if self.state == State.PAUSED:
+        #     return # Do nothing if state is paused --> should save processing power
         if self.state == State.ENABLED:
             if self.timeout <= 0:
                 self.state = State.DISABLED
