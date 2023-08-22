@@ -139,8 +139,8 @@ class StateMachineNode(Node):
             self.state = State.ENABLED
             self.get_logger().info("State: ENABLED (cmd_vel)")
             self.enable_chassis()
-        # if self.state == State.PAUSED and (self.abs_x < 0.1 and self.abs_z < 0.1): # Is this even necessary?
-        #     self.cmd_vel_pub.publish(self.twist)
+        if self.state == State.PAUSED and (self.abs_x < 0.1 and self.abs_z < 0.1): # Is this even necessary?
+            self.cmd_vel_pub.publish(self.twist)
 
 def main(args=None):
     rclpy.init(args=args)
