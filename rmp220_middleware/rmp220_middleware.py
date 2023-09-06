@@ -42,7 +42,7 @@ class StateMachineNode(Node):
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel_out', 10)
         self.cmd_vel_sub = self.create_subscription(Twist, '/cmd_vel_mux', self.cmd_vel_callback, 10)
         self.joy_sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
-        self.timer = self.create_timer(0.02, self.timer_callback) # changed to 50 Hz for testing purposes
+        self.timer = self.create_timer(0.01, self.timer_callback) # changed to 100 Hz for now
 
         # Create service clients for chassis enable and disable
         self.chassis_enable_client = self.create_client(RosSetChassisEnableCmd, 'set_chassis_enable')
