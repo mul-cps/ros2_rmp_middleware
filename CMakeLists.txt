@@ -1,26 +1,33 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.0.2)
 project(rmp220_middleware)
 
+# Set compiler options for warnings
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
-find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+# Find catkin and required components
+find_package(catkin REQUIRED COMPONENTS
+  rospy
+  std_msgs
+  geometry_msgs
+  sensor_msgs
+  segway_msgs
+)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
+# Declare catkin package
+catkin_package(
+  CATKIN_DEPENDS rospy std_msgs geometry_msgs sensor_msgs segway_msgs
+)
+
+# Install Python scripts
+catkin_install_python(PROGRAMS
+  rmp220_middleware/rmp220_middleware.py  # Replace with the actual script path
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+# Testing (optional)
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  # Add tests here if needed
 endif()
-
-ament_package()
