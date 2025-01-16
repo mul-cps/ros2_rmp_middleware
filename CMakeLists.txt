@@ -23,6 +23,7 @@ catkin_package(
 # Install Python scripts
 catkin_install_python(PROGRAMS
   rmp220_middleware/rmp220_middleware.py  # Replace with the actual script path
+  rmp220_middleware/rmp220_middleware_extended.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
