@@ -1,6 +1,6 @@
 import rospy
 from sensor_msgs.msg import Joy
-from your_package.srv import RosSetChassisEnableCmdSrv  # Replace with the actual service type
+from segway_msgs.srv import ros_set_chassis_enable_cmd as RosSetChassisEnableCmdSrv  # Replace with the actual service type
 
 class JoystickServiceCaller:
     def __init__(self):
