@@ -5,7 +5,7 @@ from std_msgs.msg import Bool
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
 from enum import Enum
-from segway_msgs.srv import RosSetChassisEnableCmd #Srv as RosSetChassisEnableCmd
+from segway_msgs.srv import ros_set_chassis_enable_cmd as RosSetChassisEnableCmd
 from segway_msgs.msg import ChassisModeFb
 
 class State(Enum):
