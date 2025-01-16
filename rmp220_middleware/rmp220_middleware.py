@@ -6,7 +6,7 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
 from enum import Enum
 from segway_msgs.srv import ros_set_chassis_enable_cmd as RosSetChassisEnableCmd
-from segway_msgs.msg import ChassisModeFb
+from segway_msgs.msg import chassis_mode_fb as ChassisModeFb
 
 class State(Enum):
     DISABLED = 0  # solid yellow
