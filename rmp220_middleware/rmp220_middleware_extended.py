@@ -15,7 +15,7 @@ class State(Enum):
 
 class JoystickServiceCaller:
     def __init__(self):
-        rospy.init_node('joystick_service_caller')
+        #rospy.init_node('joystick_service_caller')
 
         # Map buttons for select and start
         self.select_button = 6  # Select button index
