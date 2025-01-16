@@ -2,7 +2,7 @@ import rospy
 from sensor_msgs.msg import Joy
 from geometry_msgs.msg import Twist
 from segway_msgs.srv import ros_set_chassis_enable_cmd as RosSetChassisEnableCmdSrv
-from segway_msgs.msg import ChassisModeFb  # Ensure this is the correct message type
+from segway_msgs.msg import chassis_mode_fb as ChassisModeFb  # Ensure this is the correct message type
 from enum import Enum
 
 # Define State enum for states management
