@@ -64,20 +64,21 @@ class StateMachineNode:
         self.joy_sub = rospy.Subscriber('/joy', Joy, self.joy_callback)
         self.chassis_mode_sub = rospy.Subscriber('/chassis_mode_fb', ChassisModeFb, self.chassis_mode_callback)
 
-        # Service client initialization with a check
-        self.chassis_enable_client = None  # Ensure it's initialized to None
+        # Initialize JoystickServiceCaller
+        self.joystick_service_caller = JoystickServiceCaller()
+
+         #None  # Ensure it's initialized to None
+
         try:
-            rospy.wait_for_service('set_chassis_enable', timeout=5)
-            self.chassis_enable_client = rospy.ServiceProxy('set_chassis_enable', RosSetChassisEnableCmdSrv)
+            #rospy.wait_for_service('set_chassis_enable', timeout=5)
+            # Service client initialization with a check
+            self.chassis_enable_client = self.joystick_service_caller.service_proxy
             rospy.loginfo('Chassis enable service available.')
         except rospy.ROSException as e:
             rospy.logerr(f"Failed to wait for 'set_chassis_enable' service: {e}")
 
         # Timer for periodic updates
         self.timer = rospy.Timer(rospy.Duration(0.01), self.timer_callback)  # 100 Hz
-
-        # Initialize JoystickServiceCaller
-        self.joystick_service_caller = JoystickServiceCaller()
 
     def chassis_mode_callback(self, msg):
         """
