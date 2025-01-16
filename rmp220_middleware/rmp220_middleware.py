@@ -46,6 +46,29 @@ class StateMachineNode:
         # Timer for periodic updates
         self.timer = rospy.Timer(rospy.Duration(0.01), self.timer_callback)  # 100 Hz
 
+
+    def chassis_mode_callback(self, msg):
+        """
+        Callback function for handling the chassis mode feedback.
+        Sets the state of the robot based on the chassis mode.
+        """
+        if self.state == State.PAUSED:
+            return
+
+        if msg.chassis_mode == 0:
+            self.state = State.DISABLED
+            rospy.loginfo('Set chassis_mode to DISABLED')
+        elif msg.chassis_mode == 1:
+            self.state = State.ENABLED
+            rospy.loginfo('Set chassis_mode to ENABLED')
+        elif msg.chassis_mode == 2:
+            self.state = State.PASSIVE
+            rospy.loginfo('Set chassis_mode to PASSIVE')
+        elif msg.chassis_mode == 3:
+            self.state = State.STOPPED
+            rospy.loginfo('Set chassis_mode to STOPPED')
+
+
     def enable_chassis(self):
         if self.chassis_enable_client:
             try:
